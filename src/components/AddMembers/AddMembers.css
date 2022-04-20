@@ -1,0 +1,7 @@
+.parentMembers{
+    display: flex;
+    justify-content: center;
+}
+.childMembers{
+    min-width: 400px;
+}

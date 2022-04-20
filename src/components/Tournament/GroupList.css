@@ -1,0 +1,9 @@
+.parent{
+    display: flex;
+    flex-wrap: wrap;
+}
+.child{
+    min-width: 300px;
+    flex-basis: 32%;
+    background-color: yellow;
+}
