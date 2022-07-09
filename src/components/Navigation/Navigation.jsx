@@ -8,7 +8,7 @@ const Navigation = ({logoutUser}) => {
         return(
             <div>
                 <nav style={{display: "flex", justifyContent: "flex-end"}}>
-                    <NavLink to="/register" className="f3 link dim black underline pa3 pointer" >Register</NavLink>                        
+                    <NavLink to="/register" className="f3 link dim black underline pa3 pointer">Register</NavLink>                        
                 </nav>
             </div> 
         )

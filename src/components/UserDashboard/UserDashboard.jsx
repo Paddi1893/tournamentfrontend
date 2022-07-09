@@ -1,14 +1,36 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import Tournament from '../Tournament/Tournament';
 
 const UserDashboard = ({user}) => {
   const [newTournamentName, setNewTournamentName] = useState("");
-  // eslint-disable-next-line no-unused-vars
+  const [availableTournaments, setAvailableTournaments] = useState([]);
   const [selectedTournament, setSelectedTournament] = useState("");
+  useEffect(()=> {
+    fetchTournamentSelections();    
+  }, [])
+  
   let navigate = useNavigate();
-
+  
+  const fetchTournamentSelections = () => {
+    fetch("http://localhost:3000/getTournamentSelection/" + localStorage.getItem("id"), {
+      method: "GET",
+      headers: {"Content-Type": "application/json"}
+    })
+    .then(response => response.json())
+    .then(data => {
+      // console.log(data); //{tournament_id: '38', tournament_name: 'dummy'}
+      setAvailableTournaments(data);
+    })
+  }
+  
   const onSelectTournament = () => {
+    console.log(selectedTournament);
+    const tournament_id = selectedTournament.substring(0, selectedTournament.indexOf(" "));
+    const tournament_name = selectedTournament.substring((selectedTournament.indexOf(" ")+1));
+    
+    localStorage.setItem("tournament_id", tournament_id);
+    navigate("/tournament");
 
   }
   const onCreateTournament = () => {
@@ -48,10 +70,15 @@ const UserDashboard = ({user}) => {
             </div>
             <div className='ba w-50'>
                 <h2>Select Tournament</h2>
-                <select className="ma1" name="tournament">
+                <select className="ma1" name="tournament" onChange={(event) => {
+                  setSelectedTournament(event.target.value);
+                }}>
                     <option value="">Select tournament</option>
-                    {/* render options -> from the database
-                    view implementation in notes app -> value and state */}
+                    {
+                      availableTournaments.map(tournament =>  {
+                        return <option key={tournament.tournament_id} value={tournament.tournament_id  + " " + tournament.tournament_name}>{tournament.tournament_id + " " + tournament.tournament_name}</option>
+                      })
+                    }
                 </select><br/>
                 <button onClick={onSelectTournament}className="ma3">Select</button>
             </div>

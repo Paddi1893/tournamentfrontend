@@ -1,32 +1,63 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import Matchup from "./Matchup";
 
 const MatchupsList = () => {
     const [matchupsList, setMatchupsList] = useState([])
     
-    const matchups = [
-        {
-            id: 1,
-            group: 2,
-            team1: "Patrick + Nicole",
-            team2: "Klaus + Volker",
-            table: 1
-        },
-        {
-            id: 2,
-            group: 3,
-            team1: "Bernd + Anelies",
-            team2: "Silke + Diane",
-            table: 2
+    useEffect(() => {
+        fetchMatchups();        
+    }, [])
+
+    const compareFunction = (a,b) => {
+        if (a.matchup_id < b.matchup_id){
+            return -1;
         }
-    ] 
+        if (a.matchup_id > b.matchup_id){
+            return 1;
+        }
+        return 0;
+    }
+    
+    const fetchMatchups = () => {
+        fetch("http://localhost:3000/fetchMatchups/" + localStorage.getItem("tournament_id"), {
+            method: "get",
+            headers: {"Content-Type": "application/json"},            
+        })
+        .then(data => data.json())
+        .then(matchups => {
+            matchups = matchups.sort(compareFunction);
+            /*
+            {
+                matchup_id: '87',
+                team_id1: '992',
+                team_id2: '990',
+                scoreteam1: null,
+                scoreteam2: null,
+                winner_id: null,
+                table_id: 3,
+                tournament_id: '48',
+                nameTeam1: 'chiara s. + nicole sieber',  
+                nameTeam2: 'leah m. + volker sieber'     
+            }
+            */
+           setMatchupsList(matchups);
+        })
+    }
 
     return(
         <>
             <div className="dib">
-                {
-                    matchups.map(matchup => {
-                        return <Matchup phase="rounds" key={matchup.id} id={matchup.id} group={matchup.group} team1={matchup.team1} team2={matchup.team2} table={matchup.table}/>
+        {
+                    matchupsList.map((matchup, i) => {
+                        return <Matchup
+                        phase="rounds"
+                        index={i} 
+                        key={matchup.matchup_id}
+                        id={matchup.matchup_id} 
+                        team1={matchup.nameTeam1} team2={matchup.nameTeam2}
+                        table={matchup.table_id} 
+                        scoreteam1={matchup.scoreteam1}
+                        scoreteam2={matchup.scoreteam2}/>
                     })
                 }
                 

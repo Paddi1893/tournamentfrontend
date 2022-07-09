@@ -93,17 +93,20 @@ const AddMembers = ({user}) => {
             })
             .then(response => response.json())
             .then(message => {
-                console.log(message);
-                // navigate("/tournament");
+                if(message === "worked"){
+                    navigate("/tournament");
+                }
+                else{
+                    alert("something went wrong");
+                    console.log(message);
+                }
             })
         }
-        
     }
 
     const securityCheck = () => {
         if(members.length % 2 === 0){
-            if(members.length > 24){
-                console.log(true)
+            if(members.length >= 24){
                 if(numberOfGroups !== null && numberOfGroups >= 4){
                     if(numberOfTables !== null){
                         return true

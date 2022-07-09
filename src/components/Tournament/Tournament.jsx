@@ -5,7 +5,9 @@ import MatchupsList from "./MatchupsList";
 import Playoffs from "./Playoffs";
 
 const Tournament = () => {
-    const [playoffs, setPlayoffs] = useState(true) //false is standard
+    const [playoffs, setPlayoffs] = useState(false) //false is standard
+
+    //make a useEffect to check if playoffs are played or not -> if the playoffs are setup
 
     const proceedToPlayoffs = () => {
         //do a check if a all matchups are played -> have a score only then
@@ -16,23 +18,7 @@ const Tournament = () => {
             alert("Some games have not been played yet! Cannot proceed")
         }
     }
-    //dummy for the group component
-    let teams = [
-        {
-            standing: 1,
-            id: 1,
-            name: "Patrick + Nicole",
-            points: 3,
-            goals: 30
-        },
-        {
-            standing: 2,
-            id: 2,
-            name: "Klaus + Volker",
-            points: 2,
-            goals: 25
-        }
-    ]
+    
 
     let playoffsComponent;
     if(playoffs){
@@ -42,10 +28,9 @@ const Tournament = () => {
     return(
         <>
             <div className="tc">
-                <Link to={"/dashboard"}><button onClick={() => {localStorage.removeItem("tournamentName")}} className="mb3">Back to Dashboard</button></Link>
+                <Link to={"/dashboard"}><button onClick={() => {localStorage.removeItem("tournament_id")}} className="mb3">Back to Dashboard</button></Link>
                 <h1>Groups</h1>
-                {/* the props are useless do that in the GroupList Component */}
-                <GroupList teamsGroup1={teams} teamsGroup2={teams} teamsGroup3={teams}/>
+                <GroupList/>
                 <h1>Matchups</h1>
                 <MatchupsList/>
                 <button onClick={proceedToPlayoffs} className="mt4">Proceed to Playoffs</button>

@@ -10,7 +10,6 @@ import ProtectedRoute from './components/SignIn/ProtectedRoute';
 import { BrowserRouter, Routes, Route} from "react-router-dom";
 
 
-
 const App = () => {
     const [path, setPath] = useState("/");
     const [currentUser, setCurrentUser] = useState({name:"", id: ""});
