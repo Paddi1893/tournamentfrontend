@@ -17,7 +17,7 @@ const Matchup = ({team1, team2, table, id, phase, index, scoreteam1, scoreteam2}
             setScoreTeam2(scoreteam2);
         }
         if(scoreteam1 !== "" && scoreteam2 !== ""){
-        setSet(true);
+            setSet(true);
         }
         
     }, [])
@@ -26,30 +26,34 @@ const Matchup = ({team1, team2, table, id, phase, index, scoreteam1, scoreteam2}
         
         if(Number(scoreTeam1) === 10 || Number(scoreTeam2) === 10){
             if(scoreTeam1 <= 10 && scoreTeam1 >= 0 && scoreTeam1 <= 10 && scoreTeam1 >= 0 && scoreTeam1 !== "" && scoreTeam2 !== ""  && scoreTeam2 <= 10 && scoreTeam2 >= 0 && scoreTeam2 <= 10 && scoreTeam2 >= 0) {
-                console.log("scoreTeam1: " + scoreTeam1);
-                console.log("scoreTeam2: " + scoreTeam2);
-                //post to database -> depending on phase value(group, quarter finals, semi finals, finals, platz3 with the matchup id
-                fetch("http://localhost:3000/updateMatchup", {
-                    method: "post",
-                    headers: {"Content-Type": "application/json"},
-                    body: JSON.stringify({
-                        scoreTeam1: scoreTeam1,
-                        scoreTeam2: scoreTeam2,
-                        matchup_id: id,
-                        phase: phase,
-                        team1: team1,
-                        team2: team2
+                if(Number(scoreTeam1) === 10 && Number(scoreTeam2) === 10){
+                    alert("Error 3: Ergebnis nicht möglich")
+                }
+                else{
+                    fetch("http://localhost:3000/updateMatchup", {
+                        method: "post",
+                        headers: {"Content-Type": "application/json"},
+                        body: JSON.stringify({
+                            scoreTeam1: scoreTeam1,
+                            scoreTeam2: scoreTeam2,
+                            matchup_id: id,
+                            phase: phase,
+                            team1: team1,
+                            team2: team2
+                        })
                     })
-                })
-                .then(response => response.json())           
-                    setSet(true);
+                    .then(response => response.json())           
+                        setSet(true);
+                }
+                
+                //post to database -> depending on phase value(group, quarter finals, semi finals, finals, platz3 with the matchup id
             }
             else {
-                alert("Ergebnis nicht möglich")
+                alert("Error 2: Ergebnis nicht möglich")
             }
         }
         else {
-            alert("Ergebnis nicht möglich")
+            alert("Error 1: Ergebnis nicht möglich")
         }
     }
         
